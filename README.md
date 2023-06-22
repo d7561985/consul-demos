@@ -219,6 +219,75 @@ curl -H "x-v2-beta: true" 127.0.0.1:9090/currency
 ## GW
 ![](demo-consul-service-mesh/gateways/images/gateways.png)
 
+At first:
+```yaml
+curl -s localhost:9090 | jq
+{
+  "name": "web",
+  "uri": "/",
+  "type": "HTTP",
+  "start_time": "2023-06-22T12:46:57.667126",
+  "end_time": "2023-06-22T12:46:57.728579",
+  "duration": "61.453ms",
+  "upstream_calls": [
+    {
+      "uri": "http://localhost:9091",
+      "code": -1,
+      "error": "Error communicating with upstream service: Get http://localhost:9091/: EOF"
+    }
+  ],
+  "code": 500
+}
+```
+
+Install configuration
+```bash
+consul config write ./central_config/web-defaults.hcl
+consul config write ./central_config/currency-defaults.hcl
+consul config write ./central_config/payments-defaults.hcl
+consul config write ./central_config/currency-resolver.hcl
+consul config write ./central_config/payments-resolver.hcl
+```
+
+Test
+```bash
+curl -s localhost:9090 | jq
+{
+  "name": "web",
+  "uri": "/",
+  "type": "HTTP",
+  "start_time": "2023-06-22T12:50:37.778347",
+  "end_time": "2023-06-22T12:50:38.371755",
+  "duration": "593.408ms",
+  "body": "Hello World",
+  "upstream_calls": [
+    {
+      "name": "payments-dc2",
+      "uri": "http://localhost:9091",
+      "type": "HTTP",
+      "start_time": "2023-06-22T12:50:38.021380",
+      "end_time": "2023-06-22T12:50:38.282115",
+      "duration": "260.735ms",
+      "body": "PAYMENTS V2",
+      "upstream_calls": [
+        {
+          "name": "currency-dc1",
+          "uri": "http://localhost:9091",
+          "type": "HTTP",
+          "start_time": "2023-06-22T12:50:38.182726",
+          "end_time": "2023-06-22T12:50:38.185280",
+          "duration": "2.554ms",
+          "body": "2 USD for 1 GBP",
+          "code": 200
+        }
+      ],
+      "code": 200
+    }
+  ],
+  "code": 200
+}
+```
+
 # APPENDIX
 * https://github.com/nicholasjackson/demo-consul-service-mesh/tree/master
 * https://github.com/nicholasjackson/fake-service
