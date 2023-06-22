@@ -8,7 +8,15 @@ service {
   meta      = {
     version = "1"
   }
-  
+
+  check = {
+    name = "Check payments health 9090"
+    http= "http://10.5.0.4:9090/health"
+    method= "GET"
+    interval= "10s"
+    timeout=  "1s"
+  }
+
   connect { 
     sidecar_service {
       port = 20000

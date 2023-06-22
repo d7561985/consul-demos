@@ -18,6 +18,5 @@ routes = [
       service = "payments"
       service_subset = "v2"
     }
-
   },
 ]

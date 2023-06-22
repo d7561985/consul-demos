@@ -45,7 +45,7 @@ services:
   payments_v1:
     image: nicholasjackson/fake-service:v0.19.1
     environment:
-      LISTEN_ADDR: localhost:9090
+      LISTEN_ADDR: 0.0.0.0:9090
       NAME: payments-v1
       MESSAGE: "Payments"
       SERVER_TYPE: "http"
@@ -67,7 +67,7 @@ services:
   currency:
     image: nicholasjackson/fake-service:v0.19.1
     environment:
-      LISTEN_ADDR: localhost:9090
+      LISTEN_ADDR: 0.0.0.0:9090
       NAME: currency
       MESSAGE: "Currency"
       SERVER_TYPE: "http"
@@ -93,7 +93,7 @@ services:
       - "./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
     networks:
       vpcbr:
-        ipv4_address: 10.5.0.6
+        ipv4_address: 10.5.0.100
 networks:
   vpcbr:
     driver: bridge

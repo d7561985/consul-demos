@@ -1,6 +1,12 @@
 # Consul Demo
 
-## Faileover and scaleability
+## Agenda
+* Fail-over and scalability
+* Routing - Split monolith
+* Resolver - A/B
+* GateWay
+
+## Fail-over and scalability
 > learn-consul-service-mesh
 
 Done:
@@ -216,6 +222,119 @@ curl -H "x-v2-beta: true" 127.0.0.1:9090/currency
   "code": 200
 }
 ```
+
+## Resolver - A/B
+> demo-consul-service-mesh/traffic_resolver
+
+```bash
+curl -s localhost:9090 | jq
+{
+  "name": "web",
+  "uri": "/",
+  "type": "HTTP",
+  "ip_addresses": [
+    "10.5.0.3"
+  ],
+  "start_time": "2023-06-22T13:24:39.142701",
+  "end_time": "2023-06-22T13:24:39.457910",
+  "duration": "315.20925ms",
+  "body": "Hello World",
+  "upstream_calls": {
+    "http://localhost:9091": {
+      "name": "payments-v1",
+      "uri": "http://localhost:9091",
+      "type": "HTTP",
+      "ip_addresses": [
+        "10.5.0.4"
+      ],
+      "start_time": "2023-06-22T13:24:39.348155",
+      "end_time": "2023-06-22T13:24:39.356077",
+      "duration": "7.922458ms",
+      "headers": {
+        "Content-Length": "258",
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Thu, 22 Jun 2023 13:24:39 GMT",
+        "Server": "envoy",
+        "X-Envoy-Upstream-Service-Time": "164"
+      },
+      "body": "PAYMENTS V1",
+      "code": 200
+    }
+  },
+  "code": 200
+}
+```
+
+insert config
+```bash
+consul config write ./central_config/web_service_defaults.hcl
+consul config write ./central_config/payments_service_defaults.hcl
+consul config write ./central_config/currency-defaults.hcl
+consul config write ./central_config/payments_service_resolver.hcl
+consul config write ./central_config/payments_service_router.hcl
+```
+
+```bash
+curl -s -H "testgroup: b"  localhost:9090 | jq
+{
+  "name": "web",
+  "uri": "/",
+  "type": "HTTP",
+  "ip_addresses": [
+    "10.5.0.3"
+  ],
+  "start_time": "2023-06-22T13:29:47.884830",
+  "end_time": "2023-06-22T13:29:47.966916",
+  "duration": "82.085584ms",
+  "body": "Hello World",
+  "upstream_calls": {
+    "http://localhost:9091": {
+      "name": "payments-v2",
+      "uri": "http://localhost:9091",
+      "type": "HTTP",
+      "ip_addresses": [
+        "10.5.0.6"
+      ],
+      "start_time": "2023-06-22T13:29:47.927423",
+      "end_time": "2023-06-22T13:29:47.955651",
+      "duration": "28.227667ms",
+      "headers": {
+        "Content-Length": "877",
+        "Content-Type": "text/plain; charset=utf-8",
+        "Date": "Thu, 22 Jun 2023 13:29:47 GMT",
+        "Server": "envoy",
+        "X-Envoy-Upstream-Service-Time": "41"
+      },
+      "body": "PAYMENTS V2",
+      "upstream_calls": {
+        "http://localhost:9091": {
+          "name": "currency",
+          "uri": "http://localhost:9091",
+          "type": "HTTP",
+          "ip_addresses": [
+            "10.5.0.5"
+          ],
+          "start_time": "2023-06-22T13:29:47.951922",
+          "end_time": "2023-06-22T13:29:47.952263",
+          "duration": "341.125µs",
+          "headers": {
+            "Content-Length": "259",
+            "Content-Type": "text/plain; charset=utf-8",
+            "Date": "Thu, 22 Jun 2023 13:29:47 GMT",
+            "Server": "envoy",
+            "X-Envoy-Upstream-Service-Time": "7"
+          },
+          "body": "2 USD for 1 GBP",
+          "code": 200
+        }
+      },
+      "code": 200
+    }
+  },
+  "code": 200
+}
+```
+
 ## GW
 ![](demo-consul-service-mesh/gateways/images/gateways.png)
 
