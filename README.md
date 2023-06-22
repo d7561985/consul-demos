@@ -176,7 +176,6 @@ curl 127.0.0.1:9090/currency
 }
 ```
 
-
 ### Header based
 Header based rule
 
@@ -335,6 +334,17 @@ curl -s -H "testgroup: b"  localhost:9090 | jq
 }
 ```
 
+## Canary
+> demo-consul-service-mesh/traffic_resolver
+
+```bash
+consul config write ./web_service_defaults.hcl
+consul config write ./payments_service_defaults.hcl
+consul config write ./currency-defaults.hcl
+consul config write ./payments_service_router.hcl
+consul config write ./payments_service_resolver.hcl
+consul config write ./payments_service_splitter_0_100.hcl
+```
 ## GW
 ![](demo-consul-service-mesh/gateways/images/gateways.png)
 
