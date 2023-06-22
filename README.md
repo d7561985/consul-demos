@@ -3,6 +3,8 @@
 ## Routing
 > demo-consul-service-mesh/traffic_routing
 
+## GW
+![](demo-consul-service-mesh/gateways/images/gateways.png)
 
 # APPENDIX
 * https://github.com/nicholasjackson/demo-consul-service-mesh/tree/master
