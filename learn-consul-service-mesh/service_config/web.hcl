@@ -12,6 +12,15 @@ service {
     version = "1"
   }
 
+  check = {
+    name = "Check web health 9091"
+    service_id = "web-v1"
+    http= "http://10.5.0.3:9091/health"
+    method= "GET"
+    interval= "10s"
+    timeout=  "1s"
+  }
+
   connect {
     sidecar_service {
       port = 20000

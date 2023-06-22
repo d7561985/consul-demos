@@ -12,6 +12,15 @@ service {
     version = "2"
   }
 
+  check {
+    name = "Check api health 9092"
+    tcp = "10.5.0.5:9092"
+    #http= "http://10.5.0.5:9092/health"
+    #method= "GET"
+    interval= "10s"
+    timeout=  "1s"
+  }
+
   connect {
     sidecar_service {
       port = 20000

@@ -23,12 +23,3 @@ connect {
 advertise_addr = "10.5.0.2"
 advertise_addr_wan = "192.169.7.2"
 enable_central_service_config = true
-
-ui_config {
-  enabled = true
-
-  metrics_provider = "prometheus"
-  metrics_proxy = {
-    base_url = "http://10.5.0.6:9090"
-  }
-}
