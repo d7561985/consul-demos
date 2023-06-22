@@ -1,17 +1,11 @@
-# API-Gateway
+# Consul Demo
 
-Research project where we could try make declarative API-Gateway for grpc microservices system
-
-## Requirement
-
-* Declarative
-* Simple
-* Grpc -> Web-Grpc
-* Extensible: We need AAA layer inject 
-* Some endpoint only for authorized users, some - not
-* OpenTelemetry start span
-* Recapcha
+## Routing
+> demo-consul-service-mesh/traffic_routing
 
 
-### Consul
-https://github.com/hashicorp/learn-consul-service-mesh/tree/main
+# APPENDIX
+* https://github.com/nicholasjackson/demo-consul-service-mesh/tree/master
+* https://github.com/nicholasjackson/fake-service
+* https://github.com/nicholasjackson/fake-service/tree/main/examples
+* https://github.com/hashicorp/learn-consul-service-mesh
