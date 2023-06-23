@@ -4,6 +4,7 @@
 * Fail-over and scalability
 * Routing - Split monolith
 * Resolver - A/B
+* Split - Canary deployment
 * GateWay
 
 ## Fail-over and scalability
@@ -12,7 +13,6 @@
 Done:
 * api v1
 * api v2
-
 
 Run
 ```bash
