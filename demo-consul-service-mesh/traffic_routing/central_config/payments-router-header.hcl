@@ -21,7 +21,7 @@ routes = [
   {
     match {
       http {
-        path_prefix = "/"
+        path_prefix = "/xxx"
       }
     }
 

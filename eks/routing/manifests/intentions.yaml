@@ -1,0 +1,22 @@
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceIntentions
+metadata:
+  name: payments
+spec:
+  destination:
+    name: payments
+  sources:
+    - name: web
+      action: allow
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceIntentions
+metadata:
+  name: currency
+spec:
+  destination:
+    name: currency
+  sources:
+    - name: payments
+      action: allow
