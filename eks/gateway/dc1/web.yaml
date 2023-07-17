@@ -50,10 +50,13 @@ spec:
         - name: web
           image: nicholasjackson/fake-service:v0.25.2
           imagePullPolicy: IfNotPresent
+          readinessProbe:
+            httpGet:
+              port: 9090
+              path: /ready
           livenessProbe:
             httpGet:
               port: 9090
-              host: 127.0.0.1
               path: /health
           env:
             - name: UPSTREAM_URIS

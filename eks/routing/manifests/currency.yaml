@@ -43,16 +43,19 @@ spec:
       annotations:
         consul.hashicorp.com/connect-inject: "true"
         "consul.hashicorp.com/connect-service-port": "9090"
-        "consul.hashicorp.com/transparent-proxy-overwrite-probes": "false"
+#        "consul.hashicorp.com/transparent-proxy-overwrite-probes": "false"
     spec:
       serviceAccountName: currency
       containers:
         - name: currency
           image: nicholasjackson/fake-service:v0.25.2
+          readinessProbe:
+            httpGet:
+              port: 9090
+              path: /ready
           livenessProbe:
             httpGet:
               port: 9090
-              host: 127.0.0.1
               path: /health
           imagePullPolicy: IfNotPresent
           env:

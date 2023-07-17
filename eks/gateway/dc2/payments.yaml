@@ -51,6 +51,10 @@ spec:
         - name: payments
           image: nicholasjackson/fake-service:v0.25.2
           imagePullPolicy: IfNotPresent
+          readinessProbe:
+            httpGet:
+              port: 9090
+              path: /ready
           livenessProbe:
             httpGet:
               port: 9090
