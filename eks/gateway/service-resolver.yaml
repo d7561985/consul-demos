@@ -1,0 +1,17 @@
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceResolver
+metadata:
+  name: payment
+spec:
+  redirect:
+    datacenter: dev-com # DC2 name
+    service: payment
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceResolver
+metadata:
+  name: currency
+spec:
+  redirect:
+    datacenter: dev-demo # DC1 name
+    service: currency
