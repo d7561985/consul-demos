@@ -44,12 +44,18 @@ spec:
         consul.hashicorp.com/connect-inject: "true"
         "consul.hashicorp.com/connect-service-port": "9090"
         consul.hashicorp.com/connect-service-upstreams: 'currency:9091'
+        "consul.hashicorp.com/transparent-proxy-overwrite-probes": "false"
     spec:
       serviceAccountName: payments
       containers:
         - name: payments
           image: nicholasjackson/fake-service:v0.25.2
           imagePullPolicy: IfNotPresent
+          livenessProbe:
+            httpGet:
+              port: 9090
+              host: 127.0.0.1
+              path: /health
           env:
             - name: UPSTREAM_URIS
               value: http://127.0.0.1:9091
